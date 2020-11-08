@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import styles from './styles';
 import Container from '../../components/Container/Container';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Formik } from 'formik';
 const toAquiLogo = require('../../assets/images/to_aqui.png');
 import * as yup from 'yup';
-import { Input, Button, Spinner, Icon } from '@ui-kitten/components';
+import {
+  Input,
+  Button,
+  Spinner,
+  Icon,
+  Card,
+  Modal,
+  Text,
+} from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
+import { login } from '../../services/userService';
 
 const formSchema = yup.object().shape({
   email: yup.string().email().required('Campo obrigatório'),
+  password: yup.string().required('Campo obrigatório'),
 });
 
 interface FormikValues {
@@ -31,7 +41,8 @@ const LoadingIcon = () => (
 );
 
 const Login = () => {
-  const [dataState, setDataState] = useState(states.idle);
+  const [dataState, setDataState] = useState(states.error);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
   const initialValues: FormikValues = {
@@ -39,9 +50,16 @@ const Login = () => {
     password: '',
   };
 
+  const renderIcon = (props: any) => (
+    <TouchableWithoutFeedback onPress={() => setSecureTextEntry((s) => !s)}>
+      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+    </TouchableWithoutFeedback>
+  );
+
   const handleSubmit = async (values: FormikValues) => {
     try {
       setDataState(states.loading);
+      await login(values.email, values.email);
       setDataState(states.idle);
     } catch (error) {
       setDataState(states.error);
@@ -79,8 +97,10 @@ const Login = () => {
               <View style={styles.fieldContainer}>
                 <Input
                   label={'Senha:'}
-                  value={formik.values.email}
-                  onChangeText={formik.handleChange('email')}
+                  value={formik.values.password}
+                  accessoryRight={renderIcon}
+                  secureTextEntry={secureTextEntry}
+                  onChangeText={formik.handleChange('password')}
                 />
               </View>
 
@@ -96,12 +116,29 @@ const Login = () => {
               <Button
                 onPress={handleCreateAccount}
                 appearance="outline"
+                size="small"
                 style={styles.createAccount}>
                 Criar conta
               </Button>
             </View>
           )}
         </Formik>
+
+        <Modal
+          visible={dataState === states.error}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setDataState(states.idle)}>
+          <Card disabled={true}>
+            <Text style={styles.modalText}>E-mail ou senha incorretos</Text>
+            <Button
+              size="tiny"
+              status="danger"
+              style={styles.modalButton}
+              onPress={() => setDataState(states.idle)}>
+              Fechar
+            </Button>
+          </Card>
+        </Modal>
       </ScrollView>
     </Container>
   );

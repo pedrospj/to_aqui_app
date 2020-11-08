@@ -5,6 +5,11 @@ import Routes from './src/navigation/routes';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
+if (__DEV__) {
+  import('./Reactotron').then(() => console.log('Reactotron Configured'));
+}
+
 const fill = {
   flex: 1,
 };

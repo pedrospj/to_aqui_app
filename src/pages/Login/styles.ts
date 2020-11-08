@@ -34,6 +34,20 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginTop: '8%',
   },
+
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+
+  modalText: {
+    fontWeight: '600',
+    marginBottom: '5%',
+  },
+  modalButton: {
+    marginTop: '5%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 });
 
 export default styles;
