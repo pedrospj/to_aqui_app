@@ -7,6 +7,18 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+  tipsLabel: {
+    marginTop: '5%',
+    marginBottom: '3%',
+  },
+  tip: {
+    marginVertical: '1%',
+  },
+  photoButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: '5%',
+  },
 });
 
 export default styles;
