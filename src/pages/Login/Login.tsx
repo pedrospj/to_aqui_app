@@ -41,7 +41,7 @@ const LoadingIcon = () => (
 );
 
 const Login = () => {
-  const [dataState, setDataState] = useState(states.error);
+  const [dataState, setDataState] = useState(states.idle);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
@@ -59,7 +59,7 @@ const Login = () => {
   const handleSubmit = async (values: FormikValues) => {
     try {
       setDataState(states.loading);
-      await login(values.email, values.email);
+      await login(values.email, values.password);
       setDataState(states.idle);
     } catch (error) {
       setDataState(states.error);

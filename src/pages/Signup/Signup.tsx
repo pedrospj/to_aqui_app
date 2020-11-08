@@ -13,10 +13,11 @@ import {
   Modal,
   Text,
 } from '@ui-kitten/components';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 import GoBackButton from '../../components/GoBackButton/GoBackButton';
+import { createUser } from '../../services/userService';
 
 const formSchema = yup.object().shape({
   email: yup.string().email().required('Campo obrigatório'),
@@ -45,7 +46,7 @@ const LoadingIcon = () => (
 );
 
 const Signup = () => {
-  const [dataState, setDataState] = useState(states.error);
+  const [dataState, setDataState] = useState(states.idle);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
@@ -62,10 +63,19 @@ const Signup = () => {
     </TouchableWithoutFeedback>
   );
 
-  const handleSubmit = async (values: FormikValues) => {
+  const handleSubmit = async (
+    values: FormikValues,
+    formikBag: FormikHelpers<FormikValues>,
+  ) => {
+    if (values.password !== values.confirmPassword) {
+      formikBag.setFieldError('password', 'Os campos não são iguais');
+      formikBag.setFieldError('confirmPassword', 'Os campos não são iguais');
+      return;
+    }
+
     try {
       setDataState(states.loading);
-      // await login(values.email, values.email);
+      await createUser(values.name, values.email, values.password);
       setDataState(states.idle);
     } catch (error) {
       setDataState(states.error);
@@ -73,13 +83,11 @@ const Signup = () => {
     }
   };
 
-  const handleCreateAccount = () => {
-    navigation.navigate('Signup');
-  };
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <GoBackButton />
+
         <FastImage
           resizeMode={FastImage.resizeMode.contain}
           style={styles.logo}
@@ -117,16 +125,38 @@ const Signup = () => {
                   accessoryRight={renderIcon}
                   secureTextEntry={secureTextEntry}
                   onChangeText={formik.handleChange('password')}
+                  caption={
+                    formik.touched.password && !!formik.errors.password
+                      ? formik.errors.password
+                      : ''
+                  }
+                  status={
+                    formik.touched.password && !!formik.errors.password
+                      ? 'danger'
+                      : 'basic'
+                  }
                 />
               </View>
 
               <View style={styles.fieldContainer}>
                 <Input
                   label={'Confirmar senha:'}
-                  value={formik.values.password}
+                  value={formik.values.confirmPassword}
                   accessoryRight={renderIcon}
                   secureTextEntry={secureTextEntry}
-                  onChangeText={formik.handleChange('password')}
+                  onChangeText={formik.handleChange('confirmPassword')}
+                  caption={
+                    formik.touched.confirmPassword &&
+                    !!formik.errors.confirmPassword
+                      ? formik.errors.confirmPassword
+                      : ''
+                  }
+                  status={
+                    formik.touched.confirmPassword &&
+                    !!formik.errors.confirmPassword
+                      ? 'danger'
+                      : 'basic'
+                  }
                 />
               </View>
 
