@@ -53,5 +53,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>É necessário ter acesso à galeria para selecionar fotos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>É necessário ter acesso à câmera para tirar fotos.</string>
 </dict>
 </plist>

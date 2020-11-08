@@ -317,6 +317,15 @@ PODS:
     - SDWebImageWebPCoder (~> 0.6.1)
   - RNGestureHandler (1.8.0):
     - React
+  - RNImageCropPicker (0.35.1):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.35.1)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.35.1):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (1.13.1):
     - React
   - RNScreens (2.13.0):
@@ -329,6 +338,7 @@ PODS:
   - SDWebImageWebPCoder (0.6.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
+  - TOCropViewController (2.5.4)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -385,6 +395,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -406,6 +417,7 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SDWebImage
     - SDWebImageWebPCoder
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -469,6 +481,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -521,11 +535,13 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNFastImage: ff7e055d085abe465b358ce5aa51e3c6d64b1efd
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
+  RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 13f23e5498fb4aa749d19a5eda7f8792fbb9d01f
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   SDWebImage: a990c053fff71e388a10f3357edb0be17929c9c5
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
+  TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -17,6 +17,8 @@ import {
 } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { login } from '../../services/userService';
+import { loginUser } from '../../store/user/actions';
+import { useDispatch } from 'react-redux';
 
 const formSchema = yup.object().shape({
   email: yup.string().email().required('Campo obrigatório'),
@@ -44,6 +46,7 @@ const Login = () => {
   const [dataState, setDataState] = useState(states.idle);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const initialValues: FormikValues = {
     email: 'p.pedrospj@gmail.com',
@@ -59,8 +62,16 @@ const Login = () => {
   const handleSubmit = async (values: FormikValues) => {
     try {
       setDataState(states.loading);
-      await login(values.email, values.password);
+      const response = await login(values.email, values.password);
+      const userCred = {
+        name: response.user?.displayName || '',
+        email: response.user?.email || '',
+        uid: response.user?.uid || '',
+        refreshToken: response.user?.refreshToken || '',
+      };
+
       setDataState(states.idle);
+      dispatch(loginUser(userCred));
     } catch (error) {
       setDataState(states.error);
       console.log(error);
