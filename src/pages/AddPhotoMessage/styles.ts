@@ -19,6 +19,15 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginTop: '5%',
   },
+
+  sendButton: {
+    marginTop: '3%',
+  },
+  sendContainer: {
+    marginTop: '10%',
+    marginBottom: '10%',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

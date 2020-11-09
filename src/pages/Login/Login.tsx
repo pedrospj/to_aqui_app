@@ -50,7 +50,7 @@ const Login = () => {
 
   const initialValues: FormikValues = {
     email: 'p.pedrospj@gmail.com',
-    password: '',
+    password: 'Trocar@123',
   };
 
   const renderIcon = (props: any) => (
