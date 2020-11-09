@@ -29,18 +29,15 @@ export const uploadPhotos = async (images: Image[], uid: string) => {
   console.log(images[0], 'imagem');
   for (const x of images) {
     l.push({
-      data:
-        Platform.OS === 'android'
-          ? RNFetchBlob.wrap(x.path.replace('file:///data/', ''))
-          : RNFetchBlob.wrap(x.path),
+      data: RNFetchBlob.wrap(x.path),
       filename: 'qualquer',
       type: x.mime,
       name: 'pics',
     });
   }
 
-  data.append('pics', l);
-  data.append('userId', uid);
+  l.push({ name: 'userId', data: uid });
+  l.push({ name: 'userEmail', data: uid });
   try {
     RNFetchBlob.fetch(
       'POST',
