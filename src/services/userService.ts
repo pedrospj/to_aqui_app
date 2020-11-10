@@ -30,7 +30,7 @@ export const uploadPhotos = async (images: Image[], uid: string) => {
   for (const x of images) {
     l.push({
       data: RNFetchBlob.wrap(x.path),
-      filename: 'qualquer',
+      filename: 'qualquer.jpeg',
       type: x.mime,
       name: 'pics',
     });

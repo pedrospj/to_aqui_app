@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import AddPhotoMessage from '../pages/AddPhotoMessage/AddPhotoMessage';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { UserState } from '../store/user/types';
+import { auth } from '../firebase/firebase';
+import { loginUser } from '../store/user/actions';
 
 const LoginStackComponent = createStackNavigator();
 const AddPhotoStackComponent = createStackNavigator();
@@ -30,6 +32,21 @@ const AddPhotoStack = () => (
 
 const Routes = () => {
   const { uid } = useSelector<RootState, UserState>((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userData = {
+          name: user.displayName || '',
+          email: user.email || '',
+          refreshToken: user.refreshToken || '',
+          uid: user.uid || '',
+        };
+        dispatch(loginUser(userData));
+      }
+    });
+  }, [dispatch]);
 
   return uid ? <AddPhotoStack /> : <LoginStack />;
 };
