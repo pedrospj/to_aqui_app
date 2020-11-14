@@ -2,8 +2,6 @@ import axios from './axiosInstance';
 import { Image } from 'react-native-image-crop-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { auth } from '../firebase/firebase';
-import { Platform } from 'react-native';
-import RNFS from 'react-native-fs';
 
 export const createUser = async (
   name: string,

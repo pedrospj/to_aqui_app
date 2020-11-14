@@ -1,46 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/Container/Container';
-import { Text } from 'react-native';
+import { Text, ActivityIndicator, FlatList } from 'react-native';
 import * as Location from 'expo-location';
 import { Button } from '@ui-kitten/components';
+import { getUserMeetings } from '../../services/meetingService';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { UserState } from '../../store/user/types';
+import { Meeting } from '../../interfaces/Meeting';
+import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
+import MeetingItem from '../../components/MeetingItem/MeetingItem';
+
+const states = {
+  idle: 'IDLE',
+  loading: 'LOADING',
+  error: 'ERROR',
+};
 
 const Meetings = () => {
-  const [location, setLocation] = useState<Location.LocationObject>();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [dataState, setDataState] = useState(states.loading);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const { uid } = useSelector<RootState, UserState>((state) => state.user);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-      }
+    const fetchMeetings = async () => {
+      setDataState(states.loading);
+      const response = await getUserMeetings(uid);
+      console.log(response);
+      setMeetings(response);
+      setDataState(states.idle);
+    };
+    fetchMeetings();
+  }, [uid]);
 
-      let locations = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
-      //   console.log(locations, 'locations');
-      setLocation(locations);
-    })();
-  }, []);
+  if (dataState === states.loading) {
+    return (
+      <Container>
+        <ActivityIndicator size="large" color="#1890ff" />
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      <Text>Meetings</Text>
-      <Button onPress={handleStartLocation}>
-        Iniciar Geolocalizacao Background
-      </Button>
-
-      <Button status="danger" onPress={handleStoptLocation}>
-        Parar Geolocalizacao Background
-      </Button>
-
-      <Button status="danger" onPress={handleHasStarted}>
-        Verificar Geolocalizacao Background
-      </Button>
-
-      <Text>{errorMsg}</Text>
+      <FlatList
+        keyExtractor={(item) => item.id}
+        data={meetings}
+        renderItem={({ item }) => <MeetingItem {...item} />}
+      />
     </Container>
   );
 };
+
+// (async () => {
+//   let { status } = await Location.requestPermissionsAsync();
+//   if (status !== 'granted') {
+//     setErrorMsg('Permission to access location was denied');
+//   }
+//   let locations = await Location.getCurrentPositionAsync({
+//     accuracy: Location.Accuracy.High,
+//   });
+//   setLocation(locations);
+// })();
 
 export default Meetings;
