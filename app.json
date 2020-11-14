@@ -1,4 +1,12 @@
 {
   "name": "to_aqui_app",
-  "displayName": "to_aqui_app"
+  "displayName": "to_aqui_app",
+
+  "expo": {
+    "ios": {
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
+      }
+    }
+  }
 }

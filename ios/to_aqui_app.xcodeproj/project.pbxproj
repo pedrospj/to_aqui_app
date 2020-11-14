@@ -161,7 +161,6 @@
 				BAE4F6CF392EF5D3CA6C2CFB /* Pods-to_aqui_app-tvOSTests.debug.xcconfig */,
 				D16F5FC0845073CADC7A2F6C /* Pods-to_aqui_app-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

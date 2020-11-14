@@ -8,9 +8,12 @@ import { RootState } from '../store';
 import { UserState } from '../store/user/types';
 import { auth } from '../firebase/firebase';
 import { loginUser } from '../store/user/actions';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Meetings from '../pages/Meetings/Meetings';
 
 const LoginStackComponent = createStackNavigator();
 const AddPhotoStackComponent = createStackNavigator();
+const DrawerStackComponent = createDrawerNavigator();
 
 const LoginStack = () => (
   <LoginStackComponent.Navigator initialRouteName="Login" headerMode="none">
@@ -28,6 +31,13 @@ const AddPhotoStack = () => (
       component={AddPhotoMessage}
     />
   </AddPhotoStackComponent.Navigator>
+);
+
+const DrawerStack = () => (
+  <DrawerStackComponent.Navigator
+    screenOptions={{ unmountOnBlur: true, swipeEnabled: false }}>
+    <DrawerStackComponent.Screen name="Meetings" component={Meetings} />
+  </DrawerStackComponent.Navigator>
 );
 
 const Routes = () => {
@@ -48,7 +58,7 @@ const Routes = () => {
     });
   }, [dispatch]);
 
-  return uid ? <AddPhotoStack /> : <LoginStack />;
+  return uid ? <DrawerStack /> : <LoginStack />;
 };
 
 export default Routes;

@@ -53,27 +53,18 @@ const AddPhotoMessage = () => {
 
   const handleUpload = async () => {
     try {
-      // if (images.length < 3) {
-      //   setError('Selecione pelo menos 3 imagens!');
-      //   return;
-      // }
-      // if (images.length > 5) {
-      //   setError('Selecione no máximo 5 imagens!');
-      //   return;
-      // }
+      if (images.length < 3) {
+        setError('Selecione pelo menos 3 imagens!');
+        return;
+      }
+      if (images.length > 5) {
+        setError('Selecione no máximo 5 imagens!');
+        return;
+      }
 
-      // const uris = images.map((i) => i.path.replace('file://', ''));
       setDataState(states.loading);
       await uploadPhotos(images, uid);
       setDataState(states.idle);
-    } catch (err) {
-      console.log(err), 'erro aqui';
-    }
-  };
-
-  const handleMeeting = async () => {
-    try {
-      await testeMeeting();
     } catch (err) {
       console.log(err), 'erro aqui';
     }
@@ -105,8 +96,6 @@ const AddPhotoMessage = () => {
         </Text>
         <Text style={styles.tip}>- Escolha fotos em diferentes ambientes</Text>
 
-        <Button onPress={handleMeeting}>Meeting</Button>
-
         <Button
           style={styles.photoButton}
           accessoryLeft={renderZoomIcon}
@@ -114,20 +103,20 @@ const AddPhotoMessage = () => {
           Selecionar fotos
         </Button>
 
-        {/* {images.length >= 3 && images.length <= 5 ? ( */}
-        <View style={styles.sendContainer}>
-          <Text>{images.length} imagens selecionadas</Text>
-          <Button
-            onPress={handleUpload}
-            appearance="outline"
-            accessoryLeft={
-              dataState === states.loading ? LoadingIcon : undefined
-            }
-            style={styles.sendButton}>
-            Enviar fotos
-          </Button>
-        </View>
-        {/* ) : null} */}
+        {images.length >= 3 && images.length <= 5 ? (
+          <View style={styles.sendContainer}>
+            <Text>{images.length} imagens selecionadas</Text>
+            <Button
+              onPress={handleUpload}
+              appearance="outline"
+              accessoryLeft={
+                dataState === states.loading ? LoadingIcon : undefined
+              }
+              style={styles.sendButton}>
+              Enviar fotos
+            </Button>
+          </View>
+        ) : null}
       </ScrollView>
     </Container>
   );
