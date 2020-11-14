@@ -3,6 +3,7 @@ import { Image } from 'react-native-image-crop-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { auth } from '../firebase/firebase';
 import { Platform } from 'react-native';
+import RNFS from 'react-native-fs';
 
 export const createUser = async (
   name: string,
@@ -24,11 +25,9 @@ export const login = async (email: string, password: string) => {
 };
 
 export const uploadPhotos = async (images: Image[], uid: string) => {
-  const data = new FormData();
-  const l = [];
-  console.log(images[0], 'imagem');
+  const body = [];
   for (const x of images) {
-    l.push({
+    body.push({
       data: RNFetchBlob.wrap(x.path),
       filename: 'qualquer.jpeg',
       type: x.mime,
@@ -36,22 +35,46 @@ export const uploadPhotos = async (images: Image[], uid: string) => {
     });
   }
 
-  l.push({ name: 'userId', data: uid });
-  l.push({ name: 'userEmail', data: uid });
+  body.push({ name: 'userId', data: uid });
+
   try {
-    RNFetchBlob.fetch(
+    console.log(images[0]);
+
+    const data = new FormData();
+
+    data.append('pics', {
+      filename: 'teste.jpg',
+      uri: RNFetchBlob.wrap(images[0].path),
+      type: images[0].mime,
+    });
+
+    const response = await RNFetchBlob.fetch(
       'POST',
       'http://192.168.0.30:5000/user-pic',
       {
-        'content-type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data',
       },
 
-      l,
+      body,
     )
-      .then((x) => console.log(x, 'deu'))
-      .catch((er) => console.log(er, 'nao deu'));
+      .uploadProgress((written, total) => {
+        console.log('uploaded', written / total);
+      })
+      .then((resp) => {
+        console.log('then', resp);
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
+
+    return response;
   } catch (error) {
     console.log(Object.entries(error), 'aqui?');
     console.log('\n', error.toJSON(), 'aqui?');
   }
+};
+
+export const testeMeeting = async () => {
+  const response = await axios.post('/attendance-list/PAFtWz-rhUM6jZKSnHYEb');
+  return response.data;
 };
