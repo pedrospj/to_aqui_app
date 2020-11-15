@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
@@ -10,9 +10,14 @@ import { auth } from '../firebase/firebase';
 import { loginUser } from '../store/user/actions';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Meetings from '../pages/Meetings/Meetings';
+import MeetingDetail from '../pages/MeetingDetail/MeetingDetail';
+import Container from '../components/Container/Container';
+import { ActivityIndicator } from 'react-native';
+import DrawerMenu from '../components/DrawerMenu/DrawerMenu';
 
 const LoginStackComponent = createStackNavigator();
 const AddPhotoStackComponent = createStackNavigator();
+const MeetingStackComponent = createStackNavigator();
 const DrawerStackComponent = createDrawerNavigator();
 
 const LoginStack = () => (
@@ -33,19 +38,40 @@ const AddPhotoStack = () => (
   </AddPhotoStackComponent.Navigator>
 );
 
+const MeetingStack = () => (
+  <MeetingStackComponent.Navigator
+    initialRouteName="Meetings"
+    headerMode="none">
+    <MeetingStackComponent.Screen name="Meetings" component={Meetings} />
+    <MeetingStackComponent.Screen
+      name="MeetingDetail"
+      component={MeetingDetail}
+    />
+  </MeetingStackComponent.Navigator>
+);
+
 const DrawerStack = () => (
   <DrawerStackComponent.Navigator
-    screenOptions={{ unmountOnBlur: true, swipeEnabled: false }}>
-    <DrawerStackComponent.Screen name="Meetings" component={Meetings} />
+    screenOptions={{ unmountOnBlur: true, swipeEnabled: false }}
+    drawerContent={(props) => <DrawerMenu {...props} />}>
+    <DrawerStackComponent.Screen name="MeetingStack" component={MeetingStack} />
   </DrawerStackComponent.Navigator>
 );
+
+const states = {
+  idle: 'IDLE',
+  loading: 'LOADING',
+  error: 'ERROR',
+};
 
 const Routes = () => {
   const { uid } = useSelector<RootState, UserState>((state) => state.user);
   const dispatch = useDispatch();
+  const [dataState, setDataState] = useState(states.loading);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      setDataState(states.loading);
       if (user) {
         const userData = {
           name: user.displayName || '',
@@ -54,11 +80,26 @@ const Routes = () => {
           uid: user.uid || '',
         };
         dispatch(loginUser(userData));
+        setDataState(states.idle);
       }
     });
   }, [dispatch]);
 
+  if (dataState === states.loading) {
+    return (
+      <Container>
+        <ActivityIndicator size="large" color="#1890ff" />
+      </Container>
+    );
+  }
+
   return uid ? <DrawerStack /> : <LoginStack />;
+};
+
+export type StackParamList = {
+  MeetingDetail: {
+    meetingId: string;
+  };
 };
 
 export default Routes;

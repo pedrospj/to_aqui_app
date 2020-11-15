@@ -52,15 +52,4 @@ const Meetings = () => {
   );
 };
 
-// (async () => {
-//   let { status } = await Location.requestPermissionsAsync();
-//   if (status !== 'granted') {
-//     setErrorMsg('Permission to access location was denied');
-//   }
-//   let locations = await Location.getCurrentPositionAsync({
-//     accuracy: Location.Accuracy.High,
-//   });
-//   setLocation(locations);
-// })();
-
 export default Meetings;

@@ -29,7 +29,7 @@ const MeetingItem = ({
       style={styles.container}
       onPress={() =>
         navigation.navigate('MeetingDetail', {
-          params: { meetingId: id },
+          meetingId: id,
         })
       }
       status="primary"

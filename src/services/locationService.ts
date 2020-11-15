@@ -1,14 +1,14 @@
-import * as TaskManager from 'expo-task-manager';
+import axios from './axiosInstance';
 
-export const createTask = async () => {
-  TaskManager.defineTask(
-    'to_aqui_app_geolocalizacao',
-    ({ data: { locations }, error }: any) => {
-      if (error) {
-        // check `error.message` for more details.
-        return;
-      }
-      console.log('Received new locations', locations);
-    },
-  );
+export const sendGeolocation = async (data: {
+  meetingId: string;
+  lat: number;
+  long: number;
+  userId: string;
+}) => {
+  await axios.put(`/geolocation/${data.meetingId}`, {
+    latitude: data.lat,
+    longitude: data.long,
+    userId: data.userId,
+  });
 };
