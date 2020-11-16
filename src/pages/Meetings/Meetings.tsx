@@ -26,7 +26,6 @@ const Meetings = () => {
     const fetchMeetings = async () => {
       setDataState(states.loading);
       const response = await getUserMeetings(uid);
-      console.log(response);
       setMeetings(response);
       setDataState(states.idle);
     };

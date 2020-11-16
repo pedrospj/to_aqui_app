@@ -4,11 +4,13 @@ import {
   DrawerContentComponentProps,
   DrawerContentOptions,
 } from '@react-navigation/drawer';
-import { TouchableWithoutFeedback, Text } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../../store/user/actions';
-import styles from './styles';
 import { auth } from '../../firebase/firebase';
+import styles from './styles';
+import { Text, Button } from '@ui-kitten/components';
+
 const DrawerMenu = (
   props: DrawerContentComponentProps<DrawerContentOptions>,
 ) => {
@@ -23,17 +25,20 @@ const DrawerMenu = (
 
   return (
     <DrawerContentScrollView
+      style={{ flex: 1 }}
       showsVerticalScrollIndicator={false}
       bounces={false}>
       <TouchableWithoutFeedback
-        style={styles.menuItem}
         onPress={() => navigation.navigate('MeetingStack')}>
-        <Text>Eventos</Text>
+        <Text style={styles.menuItem}>Eventos</Text>
       </TouchableWithoutFeedback>
 
-      <TouchableWithoutFeedback onPress={handleLogout} style={styles.menuItem}>
-        <Text>Logout</Text>
-      </TouchableWithoutFeedback>
+      <Button
+        onPress={handleLogout}
+        status="danger"
+        style={styles.logoutContainer}>
+        Logout
+      </Button>
     </DrawerContentScrollView>
   );
 };

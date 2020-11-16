@@ -12,6 +12,11 @@ export const createUser = async (
   return response.data;
 };
 
+export const checkHasDesc = async (userId: string): Promise<boolean> => {
+  const response = await axios.get(`/user-has-desc/${userId}`);
+  return response.data.hasDescriptors;
+};
+
 export const login = async (email: string, password: string) => {
   try {
     const response = await auth.signInWithEmailAndPassword(email, password);

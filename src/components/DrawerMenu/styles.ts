@@ -3,7 +3,14 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   menuItem: {
     paddingVertical: 10,
-    backgroundColor: 'red',
+    paddingLeft: '10%',
+    fontSize: 18,
+  },
+  logoutContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 50,
+    color: 'white',
   },
 });
 

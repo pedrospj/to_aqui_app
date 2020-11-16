@@ -6,6 +6,7 @@ const initialState: UserState = {
   email: '',
   uid: '',
   refreshToken: '',
+  hasDesc: false,
 };
 
 const reducer = (state = initialState, action: ReduxAction) => {

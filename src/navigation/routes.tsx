@@ -7,13 +7,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { UserState } from '../store/user/types';
 import { auth } from '../firebase/firebase';
-import { loginUser } from '../store/user/actions';
+import { loginUser, setUserHasDesc } from '../store/user/actions';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Meetings from '../pages/Meetings/Meetings';
 import MeetingDetail from '../pages/MeetingDetail/MeetingDetail';
 import Container from '../components/Container/Container';
 import { ActivityIndicator } from 'react-native';
 import DrawerMenu from '../components/DrawerMenu/DrawerMenu';
+import { checkHasDesc } from '../services/userService';
 
 const LoginStackComponent = createStackNavigator();
 const MainStackComponent = createStackNavigator();
@@ -62,7 +63,7 @@ const DrawerStack = () => (
 const MainStack = () => (
   <MainStackComponent.Navigator
     headerMode="none"
-    initialRouteName="DrawerStack">
+    initialRouteName="AddPhotoMessage">
     <MainStackComponent.Screen
       name="AddPhotoMessage"
       component={AddPhotoMessage}
@@ -82,6 +83,7 @@ const Routes = () => {
   const { uid } = useSelector<RootState, UserState>((state) => state.user);
   const dispatch = useDispatch();
   const [dataState, setDataState] = useState(states.loading);
+  const [dataState2, setDataState2] = useState(states.loading);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -100,13 +102,27 @@ const Routes = () => {
     });
   }, [dispatch]);
 
-  if (dataState === states.loading) {
+  useEffect(() => {
+    const fetchHasDesc = async () => {
+      if (uid) {
+        setDataState2(states.loading);
+        const hasDesc = await checkHasDesc(uid);
+        setDataState2(states.idle);
+        dispatch(setUserHasDesc(hasDesc));
+      }
+    };
+    fetchHasDesc();
+  }, [uid, dispatch]);
+
+  if (dataState === states.loading || dataState2 === states.loading) {
     return (
       <Container>
         <ActivityIndicator size="large" color="#1890ff" />
       </Container>
     );
   }
+
+  console.log(uid, 'loadgo');
 
   return uid ? <MainStack /> : <LoginStack />;
 };

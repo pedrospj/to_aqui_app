@@ -6,4 +6,5 @@ export interface UserState {
   email: string;
   uid: string;
   refreshToken: string;
+  hasDesc?: boolean;
 }

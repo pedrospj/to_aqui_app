@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Container from '../../components/Container/Container';
 import { Text, Button, Icon, Spinner } from '@ui-kitten/components';
 import FastImage from 'react-native-fast-image';
@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { UserState } from '../../store/user/types';
 import { uploadPhotos } from '../../services/userService';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const states = {
   idle: 'IDLE',
@@ -25,13 +25,19 @@ const LoadingIcon = () => (
 );
 
 const AddPhotoMessage = () => {
-  const { uid, email } = useSelector<RootState, UserState>(
+  const { uid, hasDesc } = useSelector<RootState, UserState>(
     (state) => state.user,
   );
   const [error, setError] = useState('');
   const [images, setImages] = useState<Image[]>([]);
   const [dataState, setDataState] = useState(states.idle);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (hasDesc) {
+      navigation.navigate('DrawerStack');
+    }
+  }, [navigation, hasDesc]);
 
   const renderZoomIcon = (props: any) => (
     <Icon {...props} name="camera-outline" />
