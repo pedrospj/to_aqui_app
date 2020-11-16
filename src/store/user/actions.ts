@@ -7,3 +7,9 @@ export const loginUser = (userData: UserState): ReduxAction => {
     payload: userData,
   };
 };
+
+export const clearUser = (): ReduxAction => {
+  return {
+    type: SET_USER,
+  };
+};

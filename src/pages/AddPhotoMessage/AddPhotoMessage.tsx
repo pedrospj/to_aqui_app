@@ -9,7 +9,8 @@ import { ScrollView, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { UserState } from '../../store/user/types';
-import { uploadPhotos, testeMeeting } from '../../services/userService';
+import { uploadPhotos } from '../../services/userService';
+import { useNavigation } from '@react-navigation/native';
 
 const states = {
   idle: 'IDLE',
@@ -30,6 +31,7 @@ const AddPhotoMessage = () => {
   const [error, setError] = useState('');
   const [images, setImages] = useState<Image[]>([]);
   const [dataState, setDataState] = useState(states.idle);
+  const navigation = useNavigation();
 
   const renderZoomIcon = (props: any) => (
     <Icon {...props} name="camera-outline" />
@@ -65,8 +67,9 @@ const AddPhotoMessage = () => {
       setDataState(states.loading);
       await uploadPhotos(images, uid);
       setDataState(states.idle);
+      navigation.navigate('DrawerStack');
     } catch (err) {
-      console.log(err), 'erro aqui';
+      console.log(err, 'erro aqui');
     }
   };
 

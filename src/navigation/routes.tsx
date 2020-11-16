@@ -16,6 +16,7 @@ import { ActivityIndicator } from 'react-native';
 import DrawerMenu from '../components/DrawerMenu/DrawerMenu';
 
 const LoginStackComponent = createStackNavigator();
+const MainStackComponent = createStackNavigator();
 const AddPhotoStackComponent = createStackNavigator();
 const MeetingStackComponent = createStackNavigator();
 const DrawerStackComponent = createDrawerNavigator();
@@ -58,6 +59,19 @@ const DrawerStack = () => (
   </DrawerStackComponent.Navigator>
 );
 
+const MainStack = () => (
+  <MainStackComponent.Navigator
+    headerMode="none"
+    initialRouteName="DrawerStack">
+    <MainStackComponent.Screen
+      name="AddPhotoMessage"
+      component={AddPhotoMessage}
+    />
+
+    <MainStackComponent.Screen name="DrawerStack" component={DrawerStack} />
+  </MainStackComponent.Navigator>
+);
+
 const states = {
   idle: 'IDLE',
   loading: 'LOADING',
@@ -82,6 +96,7 @@ const Routes = () => {
         dispatch(loginUser(userData));
         setDataState(states.idle);
       }
+      setDataState(states.idle);
     });
   }, [dispatch]);
 
@@ -93,7 +108,7 @@ const Routes = () => {
     );
   }
 
-  return uid ? <DrawerStack /> : <LoginStack />;
+  return uid ? <MainStack /> : <LoginStack />;
 };
 
 export type StackParamList = {

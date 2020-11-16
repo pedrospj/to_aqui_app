@@ -77,6 +77,7 @@ const Signup = () => {
       setDataState(states.loading);
       await createUser(values.name, values.email, values.password);
       setDataState(states.idle);
+      navigation.goBack();
     } catch (error) {
       setDataState(states.error);
       console.log(error);
