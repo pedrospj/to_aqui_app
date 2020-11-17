@@ -14,9 +14,10 @@ interface MeetingItemProps {
 const formatDate = (dateStr: string) => {
   const [date, timeStr] = dateStr.split(' ');
   const time = timeStr.split(':');
-  return `${date} às ${time[0]}:${time[1]}`;
-};
+  const dateArray = date.split('/');
 
+  return `${dateArray[1]}/${dateArray[0]}/${dateArray[2]} às ${time[0]}:${time[1]}`;
+};
 const MeetingItem = ({
   title,
   initialDate,

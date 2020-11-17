@@ -114,13 +114,13 @@ const Routes = () => {
     fetchHasDesc();
   }, [uid, dispatch]);
 
-  if (dataState === states.loading || dataState2 === states.loading) {
-    return (
-      <Container>
-        <ActivityIndicator size="large" color="#1890ff" />
-      </Container>
-    );
-  }
+  // if (dataState === states.loading || dataState2 === states.loading) {
+  //   return (
+  //     <Container>
+  //       <ActivityIndicator size="large" color="#1890ff" />
+  //     </Container>
+  //   );
+  // }
 
   console.log(uid, 'loadgo');
 

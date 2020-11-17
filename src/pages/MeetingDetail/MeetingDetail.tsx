@@ -25,7 +25,9 @@ const states = {
 const formatDate = (dateStr: string) => {
   const [date, timeStr] = dateStr.split(' ');
   const time = timeStr.split(':');
-  return `${date} às ${time[0]}:${time[1]}`;
+  const dateArray = date.split('/');
+
+  return `${dateArray[1]}/${dateArray[0]}/${dateArray[2]} às ${time[0]}:${time[1]}`;
 };
 
 const LoadingIcon = () => (
@@ -107,6 +109,20 @@ const MeetingDetail = () => {
         style={styles.geolocationButton}>
         Enviar minha localização
       </Button>
+
+      {/* <Button
+        style={styles.geolocationButton}
+        appearance="outline"
+        status="danger">
+        Faltou
+      </Button>
+
+      <Button
+        style={styles.geolocationButton}
+        appearance="outline"
+        status="success">
+        Presente
+      </Button> */}
 
       <Modal
         visible={dataState === states.geoError || dataState === states.error}
